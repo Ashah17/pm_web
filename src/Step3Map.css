@@ -1,0 +1,38 @@
+.map-container {
+    width: 100%;
+    height: 400px; /* Adjust height as needed */
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .itinerary-details {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+  }
+  
+  .itinerary-details h2 {
+    color: #5271ff;
+    margin-top: 0;
+  }
+  
+  .itinerary-details p {
+    margin-top: 10px;
+  }
+  
+  .itinerary-details button {
+    background-color: #5271ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .itinerary-details button:hover {
+    background-color: #4059b5;
+  }
+  

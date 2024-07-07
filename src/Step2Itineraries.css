@@ -1,0 +1,43 @@
+.itineraries-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.option-box {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin: 10px;
+  padding: 20px;
+  max-width: 300px;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.option-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.option-box h3 {
+  margin-bottom: 10px;
+}
+
+.option-box ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.option-box ul li {
+  margin-bottom: 5px;
+}
+
+.itinerary-image {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 20px;
+  object-fit: cover;
+}
