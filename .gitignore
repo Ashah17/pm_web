@@ -10,6 +10,7 @@
 
 #venv
 myvenv/
+venv/
 
 # production
 /build

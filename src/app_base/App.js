@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Header';
-import Step1LocationDate from './Step1LocationDate';
-import Step2Itineraries from './Step2Itineraries';
-import Step3Map from './Step3Map';
-import Step4Confirmation from './Step4Confirmation';
+import Step1LocationDate from '../search_steps/Step1LocationDate';
+import Step2Itineraries from '../search_steps/Step2Itineraries';
+import Step3Map from '../search_steps/Step3Map';
+import Step4Confirmation from '../search_steps/Step4Confirmation';
+import AuthPage from '../user/AuthPage';
+import ProfilePage from '../user/ProfilePage';
 import './App.css';
 import axios from 'axios';
 import beachImage from './beach.png';
@@ -19,7 +21,7 @@ function App() {
 
   const fetchItineraries = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/submit');
+      const response = await axios.get('http://localhost:5000/submit');
       setItineraries(response.data.itineraries); // Set itineraries from response
     } catch (error) {
       console.error('Error fetching itineraries:', error);
@@ -34,7 +36,7 @@ function App() {
     };
 
     try {
-      const response = await axios.post('http://localhost:8000/submit', formData);
+      const response = await axios.post('http://localhost:5000/submit', formData);
       setItineraries(response.data.itineraries); // Update itineraries on search
     } catch (error) {
       console.error('Error submitting search:', error);
@@ -63,6 +65,8 @@ function App() {
           <Route path="/itineraries" element={<Step2Itineraries itineraries={itineraries} setSelectedItinerary={setSelectedItinerary} />} />
           <Route path="/map" element={<Step3Map selectedItinerary={selectedItinerary} />} />
           <Route path="/confirmation" element={<Step4Confirmation />} />
+          <Route path="/login" element={<AuthPage />} />
+          <Route path="/my-account" element={<ProfilePage />} />
         </Routes>
       </div>
     </Router>

@@ -17,4 +17,4 @@ pip install chromadb
 
 OR do it in one line:
 
-pip install flask flask_cors serpapi requests beautifulsoup4 praw langchain-google-genai flask flask_cors langchain_community langchain langchain_huggingface chromadb
+pip install flask flask_cors serpapi requests beautifulsoup4 praw langchain-google-genai flask flask_cors langchain_community langchain langchain_huggingface chromadb google-search-results
