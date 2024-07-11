@@ -6,6 +6,7 @@ import os
 from datetime import datetime
 #imported devOps function
 from initial_itinerary import developOptions
+from detailed_options import *
 
 # Routes
 
@@ -72,6 +73,36 @@ def formSubmit():
 
     return jsonify(response_data), 201
 
+
+@app.route("/detailed_options", methods=["POST"])
+def getDetailedOptions():
+    data = request.get_json()
+    selected_option = data.get('selectedOption')
+    itineraries = data.get('itineraries')
+
+    if selected_option is None or itineraries is None:
+        return jsonify({"error": "Missing data"}), 400
+
+    selected_itinerary = itineraries[selected_option]
+
+    # print("HELLOOOOOO")
+
+    # print(selected_itinerary)
+
+    # itinerary properly sent through post request, now call functions on it for detailed options
+
+    listedItinerary = individual_places(selected_itinerary)
+
+    response = {
+        'itinerary': listedItinerary
+    }
+
+    return jsonify(response)
+
+
+
+
+
 @app.route("/results")
 def getResults():
     # Fetch results from wherever they are stored: processed_data global
@@ -82,6 +113,10 @@ def getResults():
 @app.route("/processed_data")
 def getProcessedData():
     return jsonify(processed_data)
+
+
+
+
 
 
 if __name__ == "__main__":

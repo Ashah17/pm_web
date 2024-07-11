@@ -1,8 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function Step3Map({ selectedItinerary }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const detailedItinerary = location.state ? location.state.detailedItinerary : null;
 
   const handleConfirm = () => {
     navigate('/confirmation');
@@ -17,7 +19,19 @@ function Step3Map({ selectedItinerary }) {
       <h2>View Itinerary on Map</h2>
       <p>{selectedItinerary.name}</p>
       <p>{selectedItinerary.description}</p>
-      {/* You would integrate a map component here */}
+      {/* Display the detailed itinerary */}
+      {Array.isArray(detailedItinerary) ? (
+        <div>
+          <h3>Detailed Itinerary</h3>
+          <ul>
+            {detailedItinerary.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>{detailedItinerary}</p>
+      )}
       <button onClick={handleConfirm}>Confirm</button>
     </div>
   );

@@ -1,43 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Step2Itineraries.css';
-import fetchImage from './unsplashAPI'; // Assuming you have a function to fetch images from Unsplash
+import LoadingSpinner from './LoadingSpinner'; // Import the LoadingSpinner component
 
 function Step2Itineraries({ itineraries, setSelectedItinerary }) {
   const navigate = useNavigate();
-  const [itineraryImages, setItineraryImages] = useState({});
+  const [loading, setLoading] = useState(false); // Add loading state
 
-  // Function to handle selecting an itinerary
   const handleSelectItinerary = async (itinerary) => {
+    setLoading(true); // Set loading to true when starting the backend process
+
     setSelectedItinerary({
       name: `Option ${itinerary}`,
       description: itineraries[itinerary].map(([place, days]) => `${place} - ${days}`).join(', ')
     });
-    navigate('/map');
-  };
 
-  // Effect to load images for each itinerary option
-  // useEffect(() => {
-  //   const loadImages = async () => {
-  //     const images = {};
-  //     for (let i = 0; i < Object.keys(itineraries).length; i++) {
-  //       const locationName = itineraries[i + 1][0][0];
-  //       try {
-  //         const imageUrl = await fetchImage(locationName); // Assuming fetchImage returns a URL
-  //         images[i + 1] = imageUrl;
-  //       } catch (error) {
-  //         console.error(`Error fetching image for ${locationName}:`, error);
-  //         // Handle error, maybe set a placeholder image or skip this image
-  //       }
-  //     }
-  //     setItineraryImages(images);
-  //   };
-  //   loadImages();
-  // }, [itineraries]);
+    try {
+      const response = await fetch('http://localhost:8000/detailed_options', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          selectedOption: itinerary,
+          itineraries: itineraries
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Selected Itinerary Details:', data);
+        navigate('/map');
+      } else {
+        console.error('Error fetching detailed options:', data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false); // Set loading to false after the backend process completes
+    }
+  };
 
   return (
     <div className="itineraries-container">
       <h2>Choose your favorite itinerary below...</h2>
+      {loading && <LoadingSpinner />} {/* Show loading spinner when loading */}
       <div className="itinerary-options">
         {Object.keys(itineraries).map(optionNumber => (
           <div key={optionNumber} className="option-box" onClick={() => handleSelectItinerary(optionNumber)}>
@@ -49,9 +57,10 @@ function Step2Itineraries({ itineraries, setSelectedItinerary }) {
                 </li>
               ))}
             </ul>
-            {itineraryImages[optionNumber] && (
+            {/* Optionally, you can show placeholder or loading state for images */}
+            {/* {itineraryImages[optionNumber] && (
               <img src={itineraryImages[optionNumber]} alt={`Image for Option ${optionNumber}`} className="itinerary-image" />
-            )}
+            )} */}
           </div>
         ))}
       </div>
@@ -60,5 +69,3 @@ function Step2Itineraries({ itineraries, setSelectedItinerary }) {
 }
 
 export default Step2Itineraries;
-
-

@@ -14,6 +14,7 @@ pip install langchain_community
 pip install langchain
 pip install langchain_huggingface
 pip install chromadb
+pip install google-search-results
 
 OR do it in one line:
 
