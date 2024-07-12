@@ -23,14 +23,11 @@ def test():
 #     print("DATA RRETRUEND: " + str(data))
 #     return jsonify(data)
 
-@app.route("/submit", methods=["POST"]) 
+@app.route("/submit", methods=["POST"])
 def formSubmit():
-    global processed_data
     form_data = request.get_json()
 
     # Process the form data 
-    # input form data -> process (run through ML model) -> processed data (output of ML model)
-    # Right now there is no processing, just returning the data
 
     userInfo = []
 
@@ -77,11 +74,12 @@ def formSubmit():
 @app.route("/detailed_options", methods=["POST"])
 def getDetailedOptions():
     data = request.get_json()
+    # selected_itinerary = data.get('')
     selected_option = data.get('selectedOption')
     itineraries = data.get('itineraries')
 
     if selected_option is None or itineraries is None:
-        return jsonify({"error": "Missing data"}), 400
+        return jsonify({"error": "Missing data"}), 400 #error handling
 
     selected_itinerary = itineraries[selected_option]
 
@@ -94,25 +92,27 @@ def getDetailedOptions():
     listedItinerary = individual_places(selected_itinerary)
 
     response = {
-        'itinerary': listedItinerary
+        'listedItinerary': listedItinerary
     }
 
-    return jsonify(response)
+    print(listedItinerary)
+
+    return jsonify(response), 201
 
 
 
 
 
-@app.route("/results")
-def getResults():
-    # Fetch results from wherever they are stored: processed_data global
-    # Return results as JSON response
-    print(jsonify(processed_data))
-    return jsonify(processed_data)
+# @app.route("/results")
+# def getResults():
+#     # Fetch results from wherever they are stored: processed_data global
+#     # Return results as JSON response
+#     print(jsonify(processed_data))
+#     return jsonify(processed_data)
 
-@app.route("/processed_data")
-def getProcessedData():
-    return jsonify(processed_data)
+# @app.route("/processed_data")
+# def getProcessedData():
+#     return jsonify(processed_data)
 
 
 

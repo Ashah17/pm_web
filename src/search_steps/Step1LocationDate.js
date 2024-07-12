@@ -53,4 +53,3 @@ function Step1LocationDate({ onSearch }) {
 }
 
 export default Step1LocationDate;
-

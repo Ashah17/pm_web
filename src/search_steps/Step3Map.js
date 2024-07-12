@@ -1,38 +1,71 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import './Step3Map.css'; // Ensure you have this CSS file
 
-function Step3Map({ selectedItinerary }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const detailedItinerary = location.state ? location.state.detailedItinerary : null;
+function Step3Map({ detailedItinerary }) {
+  const [expandedKey, setExpandedKey] = useState(null);
 
-  const handleConfirm = () => {
-    navigate('/confirmation');
+  const handleExpand = (key) => {
+    setExpandedKey(expandedKey === key ? null : key);
   };
 
-  if (!selectedItinerary) {
-    return <p>No itinerary selected</p>;
+  if (!detailedItinerary || Object.keys(detailedItinerary).length === 0) {
+    return <div>No detailed itinerary available.</div>;
   }
 
   return (
-    <div>
-      <h2>View Itinerary on Map</h2>
-      <p>{selectedItinerary.name}</p>
-      <p>{selectedItinerary.description}</p>
-      {/* Display the detailed itinerary */}
-      {Array.isArray(detailedItinerary) ? (
-        <div>
-          <h3>Detailed Itinerary</h3>
-          <ul>
-            {detailedItinerary.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <p>{detailedItinerary}</p>
-      )}
-      <button onClick={handleConfirm}>Confirm</button>
+    <div className="map-container">
+      <div className="itinerary-details">
+        {Object.keys(detailedItinerary).map((key) => (
+          <div key={key} className="itinerary-section">
+            <div className="section-header" onClick={() => handleExpand(key)}>
+              <span className="expand-icon">
+                {expandedKey === key ? '-' : '+'}
+              </span>
+              <h3>{key}</h3>
+            </div>
+            {expandedKey === key && (
+              <div className="section-content">
+                <div className="content-box">
+                  <h4>Places</h4>
+                  <ul>
+                    {detailedItinerary[key][0].map((place, index) => (
+                      <li key={index}>{place}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="content-box">
+                  <h4>Restaurants</h4>
+                  <ul>
+                    {detailedItinerary[key][1].map((restaurant, index) => (
+                      <li key={index}>{restaurant}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="content-box">
+                  <h4>Tips</h4>
+                  <ul>
+                    {detailedItinerary[key][2].map((tip, index) => (
+                      <li key={index}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="content-box">
+                  <h4>Transportation</h4>
+                  <ul>
+                    {detailedItinerary[key][3].map((transport, index) => (
+                      <li key={index}>{transport}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="map-placeholder">
+        {/* Replace this with your actual map */}
+        <div className="map-content">Map Placeholder</div>
+      </div>
     </div>
   );
 }

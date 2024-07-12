@@ -1,31 +1,30 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './Step2Itineraries.css';
 import LoadingSpinner from './LoadingSpinner'; // Import the LoadingSpinner component
-import { detailedOptions } from './API'
+import { detailedOptions } from '../search_steps/API'; // Adjust the import path as needed
 
 function Step2Itineraries({ itineraries, setSelectedItinerary, setDetailedItinerary }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // Add loading state
 
-  const handleSelectedItinerary = async (itinerary) => {
-    setLoading(true) //loading spinner
+  const handleSelectItinerary = async (itinerary) => {
+    setLoading(true); // Set loading to true when starting the backend process
 
     setSelectedItinerary({
       name: `Option ${itinerary}`,
       description: itineraries[itinerary].map(([place, days]) => `${place} - ${days}`).join(', ')
-    }); //set selected itinerary function
+    });
 
     try {
-      //get details from backend endpoint
+      // Fetch detailed options from backend
       const detailedItinerary = await detailedOptions(itinerary, itineraries);
-      //passing in the itinerary (optionChosen) and itineraries dict to backend as params
-      setDetailedItinerary(detailedItinerary); //save to state
-      navigate('/map'); //navigate to map
+      setDetailedItinerary(detailedItinerary); // Save detailed itinerary to state
+      navigate('/map'); // Navigate to the map page
     } catch (error) {
-      console.error('error fetching details');
+      console.error('Error fetching detailed options:', error);
     } finally {
-      setLoading(false); //either way loading done
+      setLoading(false); // Set loading to false after the backend process completes
     }
   };
 
@@ -35,7 +34,7 @@ function Step2Itineraries({ itineraries, setSelectedItinerary, setDetailedItiner
       {loading && <LoadingSpinner />} {/* Show loading spinner when loading */}
       <div className="itinerary-options">
         {Object.keys(itineraries).map(optionNumber => (
-          <div key={optionNumber} className="option-box" onClick={() => handleSelectedItinerary(optionNumber)}>
+          <div key={optionNumber} className="option-box" onClick={() => handleSelectItinerary(optionNumber)}>
             <h3>Option {optionNumber}</h3>
             <ul>
               {itineraries[optionNumber].map((placeInfo, index) => (
@@ -44,10 +43,6 @@ function Step2Itineraries({ itineraries, setSelectedItinerary, setDetailedItiner
                 </li>
               ))}
             </ul>
-            {/* Optionally, you can show placeholder or loading state for images */}
-            {/* {itineraryImages[optionNumber] && (
-              <img src={itineraryImages[optionNumber]} alt={`Image for Option ${optionNumber}`} className="itinerary-image" />
-            )} */}
           </div>
         ))}
       </div>

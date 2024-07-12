@@ -3,6 +3,7 @@ import os
 from scrape_functions import *
 from initial_itinerary import *
 import time
+from google.api_core.exceptions import ResourceExhausted
 
 
 def individual_places(selected_itinerary):
@@ -51,7 +52,7 @@ def summarize_content(loc, dur):
 
     split_docs = text_splitter.split_documents(docs) #split all docs
 
-    llm = ChatGoogleGenerativeAI(model = "gemini-pro", temperature=0.2)
+    llm = ChatGoogleGenerativeAI(model = "gemini-1.5-flash", temperature=0.2)
 
     embeddings_model_name = "sentence-transformers/all-MiniLM-L6-v2"
 
@@ -79,11 +80,20 @@ def summarize_content(loc, dur):
 
     prompt = prompt_template.format(context=context, question=query)
 
-    details = (llm.invoke(prompt)).content
+    # try:
+    #     details = (llm.invoke(prompt)).content
+    #     return details
+    # except ResourceExhausted:
+    #     print("DIDNT WORK!!")
+    #     details = ""
+    #     return details
 
-    print(details)
-
+    details = llm.invoke(prompt).content
     return details
+
+    # print(details)
+
+    # return details
 
     # file = open("Itinerary.txt", "w")
 
@@ -99,7 +109,7 @@ def summarizeText(text, addition):
 
     os.environ['GOOGLE_API_KEY'] = "AIzaSyDAihy560sOWWZAtWvO2lVzNSegMvBHf2w" #environ var
 
-    llm = ChatGoogleGenerativeAI(model='gemini-pro', temperature=0.2)
+    llm = ChatGoogleGenerativeAI(model='gemini-1.5-flash', temperature=0.2)
 
     response = llm.invoke(prompt)
 
@@ -148,7 +158,9 @@ def extract_details(info_text):
             # Extract information for the current city
             section_info = breakdown_section(section)
             # Add to the itinerary dictionary
-            itinerary[city_name] = section_info
+            if any(section_info):
+                #so if all is empty, it won't add entry
+                itinerary[city_name] = section_info
 
     return itinerary
 
