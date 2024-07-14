@@ -5,7 +5,7 @@ import Step1LocationDate from '../search_steps/Step1LocationDate';
 import Step2Itineraries from '../search_steps/Step2Itineraries';
 import Step3Map from '../search_steps/Step3Map';
 import Step4Confirmation from '../search_steps/Step4Confirmation';
-import AuthPage from '../user/AuthPage';
+import Login from '../user/Login';
 import ProfilePage from '../user/ProfilePage';
 import './App.css';
 import axios from 'axios';
@@ -61,7 +61,7 @@ function App() {
               setLoading={setLoading} />} />
           <Route path="/map" element={<Step3Map detailedItinerary={detailedItinerary}/>} />
           <Route path="/confirmation" element={<Step4Confirmation />} />
-          <Route path="/login" element={<AuthPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/my-account" element={<ProfilePage />} />
         </Routes>
       </div>

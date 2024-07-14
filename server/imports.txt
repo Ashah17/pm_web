@@ -18,4 +18,7 @@ pip install google-search-results
 
 OR do it in one line:
 
-pip install flask flask_cors serpapi requests beautifulsoup4 praw langchain-google-genai flask flask_cors langchain_community langchain langchain_huggingface chromadb google-search-results
+pip install flask flask_cors serpapi requests beautifulsoup4 praw langchain-google-genai flask-session langchain_community langchain langchain_huggingface chromadb boto3 google-search-results
+
+
+AWS account id: 590183784680
