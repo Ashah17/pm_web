@@ -74,6 +74,7 @@ def callback():
         return 'Error: No code provided', 400
 
     # logger.debug(f"Authorization code received: {code}")
+    
     # Exchange the authorization code for tokens
     token_response = requests.post(
         COGNITO_TOKEN_URL,
