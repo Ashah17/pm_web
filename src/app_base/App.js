@@ -18,6 +18,7 @@ function App() {
   const [itineraries, setItineraries] = useState([]);
   const [selectedItinerary, setSelectedItinerary] = useState(null);
   const [detailedItinerary, setDetailedItinerary] = useState(null); //state + corresponding setter
+  const [builtItinerary, setBuiltItinerary] = useState(null); //for the built itinerary for mapping
   
   const [loading, setLoading] = useState(false); // loading state
   
@@ -59,8 +60,12 @@ function App() {
               setSelectedItinerary={setSelectedItinerary} 
               setDetailedItinerary={setDetailedItinerary} //state functions
               setLoading={setLoading} />} />
-          <Route path="/map" element={<Step3Map detailedItinerary={detailedItinerary}/>} />
-          <Route path="/confirmation" element={<Step4Confirmation />} />
+          <Route path="/map" element=
+            {<Step3Map 
+              detailedItinerary={detailedItinerary}
+              setBuiltItinerary={setBuiltItinerary} //state for built itinerary
+              setLoading={setLoading}/>} />
+          <Route path="/confirmation" element={<Step4Confirmation builtItinerary={builtItinerary}/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/my-account" element={<ProfilePage />} />
         </Routes>

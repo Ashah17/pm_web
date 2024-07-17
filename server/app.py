@@ -7,13 +7,13 @@ import os
 import requests
 from datetime import datetime
 #imported devOps function
-from initial_itinerary import developOptions
-from detailed_options import *
+from .initial_itinerary import developOptions
+from .detailed_options import individual_places
 
 # login auth tokens
-from token_validation import validate_token
+from .token_validation import validate_token
 import jwt
-from constants import COGNITO_AUTH_BASE_URL, COGNITO_CLIENT_ID, COGNITO_REDIRECT_URI, COGNITO_TOKEN_URL, COGNITO_LOGOUT_URL
+from .constants import COGNITO_AUTH_BASE_URL, COGNITO_CLIENT_ID, COGNITO_REDIRECT_URI, COGNITO_TOKEN_URL, COGNITO_LOGOUT_URL
 
 import logging
 
@@ -225,6 +225,18 @@ def getDetailedOptions():
 
     return jsonify(response), 201
 
+@app.route('/mapping_details', methods=["POST"])
+def generate_map():
+    data = request.get_json()
+    print(data)
+
+    # l = ['h', 'i']
+
+    response = {
+        'mappingDetails': data
+    }
+
+    return jsonify(response), 201
 
 
 

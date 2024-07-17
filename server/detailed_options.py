@@ -1,7 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os
-from scrape_functions import *
-from initial_itinerary import *
+from .scrape_functions import *
+from .initial_itinerary import *
 import time
 from google.api_core.exceptions import ResourceExhausted
 

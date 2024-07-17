@@ -104,7 +104,7 @@ def scrapeSERPInitial(loc, dur, site_name):
         "hl": "en",
         "gl": "us",
         "google_domain": "google.com",
-        "api_key": "ff47743bcea8483c61a2f37649a3ae151a217c128419438a1646fbe66031a5e9",
+        "api_key": "4152da1bab98e3c9da74046d8380538574653c93af620c5a3d51b1566c112522",
         "num": 6
     }
 
@@ -128,7 +128,7 @@ def scrapeSERP(loc, dur):
         "hl": "en",
         "gl": "us",
         "google_domain": "google.com",
-        "api_key": "ff47743bcea8483c61a2f37649a3ae151a217c128419438a1646fbe66031a5e9",
+        "api_key": "4152da1bab98e3c9da74046d8380538574653c93af620c5a3d51b1566c112522",
         "num": 5
     }
 
@@ -147,7 +147,7 @@ def scrapeSERP(loc, dur):
         "hl": "en",
         "gl": "us",
         "google_domain": "google.com",
-        "api_key": "ff47743bcea8483c61a2f37649a3ae151a217c128419438a1646fbe66031a5e9",
+        "api_key": "4152da1bab98e3c9da74046d8380538574653c93af620c5a3d51b1566c112522",
         "num": 5
     }
 

@@ -4,7 +4,7 @@ import json
 from flask import request, jsonify
 
 
-from constants import COGNITO_JWKS_URL, COGNITO_CLIENT_ID
+from .constants import COGNITO_JWKS_URL, COGNITO_CLIENT_ID
 
 
 def get_jwks():

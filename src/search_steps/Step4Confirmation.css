@@ -1,0 +1,44 @@
+.confirmation-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+  }
+  
+  .back-button {
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .back-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .itinerary-section {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #fff;
+  }
+  
+  .confirmation-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .confirmation-box {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .confirmation-box:last-child {
+    margin-right: 0;
+  }
+  
+  h4 {
+    margin-bottom: 10px;
+  }
+  

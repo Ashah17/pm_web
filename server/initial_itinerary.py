@@ -1,5 +1,5 @@
 import os
-from scrape_functions import *
+from .scrape_functions import *
 
 #imports below for RAG
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings

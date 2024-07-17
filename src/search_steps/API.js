@@ -17,3 +17,9 @@ export const detailedOptions = async (selectedOption, itineraries) => {
 
     return response.data.listedItinerary; //listedItinerary is the response
 }
+
+export const mappingDetails = async (builtItinerary) => {
+    const response = await axios.post('http://localhost:8000/mapping_details', builtItinerary);
+    return response.data.mappingDetails;
+}
+
