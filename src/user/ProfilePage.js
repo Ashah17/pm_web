@@ -1,92 +1,78 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+
+const ProfilePageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #001f3f;
+    color: white;
+`;
+
+const ProfileCard = styled.div`
+    background-color: #0074D9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 300px;
+`;
+
+const Title = styled.h1`
+    color: #7FDBFF;
+    margin-bottom: 20px;
+`;
+
+const Email = styled.p`
+    font-size: 18px;
+    color: #FFFFFF;
+    margin: 10px 0;
+`;
+
+const Error = styled.div`
+    color: #FF4136;
+    background-color: #FFDC00;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px;
+`;
 
 const ProfilePage = () => {
-  const [user, setUser] = useState({
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    bio: 'Software developer with a passion for open-source projects.',
-  });
+    const [email, setEmail] = useState(null);
+    const [error, setError] = useState(null);
 
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedUser, setEditedUser] = useState({ ...user });
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            try {
+                const response = await axios.get('http://localhost:8000/user-profile', { withCredentials: true });
+                setEmail(response.data.email);
+            } catch (error) {
+                setError(error.response ? error.response.data.error : 'Error fetching user information');
+            }
+        };
 
-  const handleEditToggle = () => {
-    setIsEditing(!isEditing);
-    setEditedUser({ ...user });
-  };
+        fetchUserInfo();
+    }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setEditedUser({
-      ...editedUser,
-      [name]: value,
-    });
-  };
+    if (error) {
+        return <ProfilePageContainer><Error>{error}</Error></ProfilePageContainer>;
+    }
 
-  const handleSave = () => {
-    setUser({ ...editedUser });
-    setIsEditing(false);
-  };
+    if (!email) {
+        return <ProfilePageContainer><Email>Loading...</Email></ProfilePageContainer>;
+    }
 
-  return (
-    <div className="profile-container">
-      <h2>User Profile</h2>
-      <div className="profile-info">
-        <label>Name:</label>
-        {isEditing ? (
-          <input
-            type="text"
-            name="name"
-            value={editedUser.name}
-            onChange={handleChange}
-          />
-        ) : (
-          <p>{user.name}</p>
-        )}
-      </div>
-      <div className="profile-info">
-        <label>Email:</label>
-        {isEditing ? (
-          <input
-            type="email"
-            name="email"
-            value={editedUser.email}
-            onChange={handleChange}
-          />
-        ) : (
-          <p>{user.email}</p>
-        )}
-      </div>
-      <div className="profile-info">
-        <label>Bio:</label>
-        {isEditing ? (
-          <textarea
-            name="bio"
-            value={editedUser.bio}
-            onChange={handleChange}
-          />
-        ) : (
-          <p>{user.bio}</p>
-        )}
-      </div>
-      <div className="profile-actions">
-        {isEditing ? (
-          <>
-            <button onClick={handleSave} className="btn save-btn">
-              Save
-            </button>
-            <button onClick={handleEditToggle} className="btn cancel-btn">
-              Cancel
-            </button>
-          </>
-        ) : (
-          <button onClick={handleEditToggle} className="btn edit-btn">
-            Edit Profile
-          </button>
-        )}
-      </div>
-    </div>
-  );
+    return (
+        <ProfilePageContainer>
+            <ProfileCard>
+                <Title>User Profile</Title>
+                <Email>{email}</Email>
+            </ProfileCard>
+        </ProfilePageContainer>
+    );
 };
 
 export default ProfilePage;

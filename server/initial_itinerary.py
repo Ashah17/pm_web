@@ -1,5 +1,5 @@
 import os
-from scrape_functions import *
+from .scrape_functions import *
 
 #imports below for RAG
 from langchain_community.embeddings.huggingface import HuggingFaceEmbeddings
@@ -21,7 +21,7 @@ def developOptions(loc, dur):
 
     split_docs = text_splitter.split_documents(docs) #split all docs
 
-    llm = ChatGoogleGenerativeAI(model = "gemini-pro", temperature=0.2)
+    llm = ChatGoogleGenerativeAI(model = "gemini-1.5-flash", temperature=0.2)
 
     embeddings_model_name = "sentence-transformers/all-MiniLM-L6-v2"
 

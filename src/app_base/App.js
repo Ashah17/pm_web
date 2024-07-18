@@ -5,48 +5,40 @@ import Step1LocationDate from '../search_steps/Step1LocationDate';
 import Step2Itineraries from '../search_steps/Step2Itineraries';
 import Step3Map from '../search_steps/Step3Map';
 import Step4Confirmation from '../search_steps/Step4Confirmation';
-import AuthPage from '../user/AuthPage';
+import Login from '../user/Login';
 import ProfilePage from '../user/ProfilePage';
 import './App.css';
 import axios from 'axios';
 import beachImage from './beach.png';
+import { submitSearch } from '../search_steps/API.js'
+import LoadingSpinner from '../search_steps/LoadingSpinner'; // Assume you have a LoadingSpinner component
 
 function App() {
+  //below are the states defined (js works on this to transfer info bw webpages)
   const [itineraries, setItineraries] = useState([]);
-  const [selectedItinerary, setSelectedItinerary] = useState(null); // State for selected itinerary
-
-  useEffect(() => {
-    fetchItineraries();
-  }, []);
-
-  const fetchItineraries = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/submit');
-      setItineraries(response.data.itineraries); // Set itineraries from response
-    } catch (error) {
-      console.error('Error fetching itineraries:', error);
-    }
-  };
-
+  const [selectedItinerary, setSelectedItinerary] = useState(null);
+  const [detailedItinerary, setDetailedItinerary] = useState(null); //state + corresponding setter
+  const [builtItinerary, setBuiltItinerary] = useState(null); //for the built itinerary for mapping
+  
+  const [loading, setLoading] = useState(false); // loading state
+  
   const handleSearch = async (params) => {
-    const formData = {
-      location: params.location,
-      startDate: params.startDate,
-      endDate: params.endDate
-    };
-
+    setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/submit', formData);
-      setItineraries(response.data.itineraries); // Update itineraries on search
+      const data = await submitSearch(params);
+      setItineraries(data);
     } catch (error) {
       console.error('Error submitting search:', error);
+    } finally {
+      setLoading(false);
     }
-  };
-  
+  }; //handles the submit endpoint logic
+
   return (
     <Router>
       <div className="App">
         <Header />
+        {loading && <LoadingSpinner />} {/* Show loading spinner when loading */}
         <Routes>
           <Route path="/" element={
             <div className="landing">
@@ -62,10 +54,19 @@ function App() {
               </div>
             </div>
           } />
-          <Route path="/itineraries" element={<Step2Itineraries itineraries={itineraries} setSelectedItinerary={setSelectedItinerary} />} />
-          <Route path="/map" element={<Step3Map selectedItinerary={selectedItinerary} />} />
-          <Route path="/confirmation" element={<Step4Confirmation />} />
-          <Route path="/login" element={<AuthPage />} />
+          <Route path="/itineraries" element=
+            {<Step2Itineraries 
+              itineraries={itineraries} 
+              setSelectedItinerary={setSelectedItinerary} 
+              setDetailedItinerary={setDetailedItinerary} //state functions
+              setLoading={setLoading} />} />
+          <Route path="/map" element=
+            {<Step3Map 
+              detailedItinerary={detailedItinerary}
+              setBuiltItinerary={setBuiltItinerary} //state for built itinerary
+              setLoading={setLoading}/>} />
+          <Route path="/confirmation" element={<Step4Confirmation builtItinerary={builtItinerary}/>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/my-account" element={<ProfilePage />} />
         </Routes>
       </div>
