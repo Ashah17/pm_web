@@ -10,6 +10,10 @@ from datetime import datetime
 from .initial_itinerary import developOptions
 from .detailed_options import individual_places
 
+#imported mapping functions
+from .mapping import map_return
+from .cluster_tsp import solve_tsp_on_clusters
+
 # login auth tokens
 from .token_validation import validate_token
 import jwt
@@ -29,6 +33,7 @@ app.config['SECRET_KEY'] = 'big_bush'
 app.config['SESSION_TYPE'] = 'filesystem'
 Session(app)
 
+
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s %(levelname)s %(message)s',
@@ -42,6 +47,7 @@ logger = logging.getLogger()
 # Configure DynamoDB
 dynamodb = boto3.resource('dynamodb', region_name='us-east-2')
 users_table = dynamodb.Table('Users')
+
 
 # Routes
 @app.route("/test")
@@ -209,16 +215,13 @@ def getDetailedOptions():
 
     selected_itinerary = itineraries[selected_option]
 
-    # print("HELLOOOOOO")
-
-    # print(selected_itinerary)
-
     # itinerary properly sent through post request, now call functions on it for detailed options
 
     listedItinerary = individual_places(selected_itinerary)
 
     response = {
-        'listedItinerary': listedItinerary
+        'listedItinerary': listedItinerary,
+        'selected_itinerary': selected_itinerary #return this for mapping method
     }
 
     print(listedItinerary)
@@ -228,17 +231,82 @@ def getDetailedOptions():
 @app.route('/mapping_details', methods=["POST"])
 def generate_map():
     data = request.get_json()
+
     print(data)
 
-    # l = ['h', 'i']
+    selected_itinerary = data.get('selectedItinerary') #the initial selected itinerary (subplaces + days)
+    chosen_details = data.get('builtItinerary') #the details chosen per subplace for each day
 
+    #now concat the number of days per place to the corresponding place in chosen details
+    #so the format would be {place1: (dur, [places], [restaurants])}
+
+    final_details = {} #new dict is easier
+    ###
+    #selected_itinerary is formatted differently (name and description keys)
+    #but places in description are same as these chosen_details places
+    #NEED TO CHANGE THIS CANT DO EXTRA WORK HERE
+    #SELECTED_ITINERARY SHUD BE SENT BACK AS: {place: dur, place: dur}
+    #doing that below
+    ###
+
+    parts = selected_itinerary.get('description').split(',')
+
+    # Initialize a dictionary to store the place-duration pairs
+    place_duration = {}
+
+    # Iterate over each part
+    for part in parts:
+        # Split the part by dash
+        place, duration_part = part.split('-')
+        # Extract the place name and strip any leading/trailing spaces
+        place = place.strip()
+        # Extract the duration and convert it to an integer
+        duration = int(duration_part.split()[0].strip())
+        # Add the place-duration pair to the dictionary
+        place_duration[place] = duration
+
+    # print(place_duration)
+
+    for place in chosen_details:
+        #now can use place_duration dict properly
+
+        places_restaurants = chosen_details[place] #original list
+
+        dur = place_duration[place] #the value is the dur now
+
+        places_rest_dur = (dur, places_restaurants[0], places_restaurants[1]) #format as mentioned above
+
+        final_details[place] = places_rest_dur #create new dict
+    
+    # print(final_details) #test does it work
+
+    #correct format now
+
+    #do clustering + tsp for each place
+
+    mappingData = {} #return map data to frontend for viz
+
+    for place in final_details:
+        attractions = []
+        for item in final_details.get(place)[1]:
+            attractions.append(item) #places
+        for item in final_details.get(place)[2]:  
+            attractions.append(item) #restaurants
+        
+        k = final_details.get(place)[0] #num clusters (days)
+
+        data = solve_tsp_on_clusters(place, attractions, k)
+
+        mappingData[place] = data
+    
+    print(mappingData)
+    
     response = {
-        'mappingDetails': data
+        'mappingDetails': final_details,
+        'mappingData': mappingData
     }
 
     return jsonify(response), 201
-
-
 
 
 # @app.route("/results")

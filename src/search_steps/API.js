@@ -15,11 +15,15 @@ export const detailedOptions = async (selectedOption, itineraries) => {
 
     //in this case the params is the selected itinerary from the web page
 
-    return response.data.listedItinerary; //listedItinerary is the response
+    return response.data.listedItinerary; //listedItinerary is the response, selected_itinerary is the selected option
+    //return data so the frontend can pick what to display
 }
 
-export const mappingDetails = async (builtItinerary) => {
-    const response = await axios.post('http://localhost:8000/mapping_details', builtItinerary);
-    return response.data.mappingDetails;
+export const mappingDetails = async (builtItinerary, selectedItinerary) => {
+    const response = await axios.post('http://localhost:8000/mapping_details', {
+        builtItinerary, 
+        selectedItinerary
+    });
+    return response.data;
 }
 

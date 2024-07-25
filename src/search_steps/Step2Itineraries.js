@@ -11,10 +11,12 @@ function Step2Itineraries({ itineraries, setSelectedItinerary, setDetailedItiner
   const handleSelectedItinerary = async (itinerary) => {
     setLoading(true) //loading spinner
 
-    setSelectedItinerary({
+    const itinerary_selected = {
       name: `Option ${itinerary}`,
       description: itineraries[itinerary].map(([place, days]) => `${place} - ${days}`).join(', ')
-    }); //set selected itinerary function
+    }; //set selected itinerary function
+
+    setSelectedItinerary(itinerary_selected)
 
     try {
       //get details from backend endpoint

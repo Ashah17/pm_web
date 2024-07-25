@@ -18,11 +18,15 @@ pip install google-search-results
 pip install flask_session
 pip install jwt
 pip install boto3
+pip install googlemaps
+pip install folium
+pip install geopy
+pip install cvxpy
 
 OR do it in one line:
 
 pip install flask flask_cors serpapi requests beautifulsoup4 praw langchain-google-genai flask-session langchain_community langchain langchain_huggingface chromadb boto3 google-search-results
-flask_session jwt boto3
+flask_session jwt boto3 googlemaps folium geopy cvxpy
 
 
 AWS account id: 590183784680

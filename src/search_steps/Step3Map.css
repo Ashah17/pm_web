@@ -80,11 +80,13 @@
   cursor: pointer;
   outline: none;
   position: relative;
+  background-color: white; /* Default background color */
+  transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
 }
 
 .circular-checkbox:checked {
-  background-color: #007bff;
-  border: none;
+  background-color: #007bff; /* Fill color when checked */
+  border: 2px solid #007bff; /* Border color when checked */
 }
 
 .circular-checkbox:checked::after {
@@ -95,7 +97,7 @@
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.3); /* Inner circle color when checked */
 }
 
 li {
@@ -146,4 +148,3 @@ li:hover {
 .confirm-button:hover {
   background-color: #218838;
 }
-

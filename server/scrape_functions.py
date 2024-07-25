@@ -104,7 +104,7 @@ def scrapeSERPInitial(loc, dur, site_name):
         "hl": "en",
         "gl": "us",
         "google_domain": "google.com",
-        "api_key": "4152da1bab98e3c9da74046d8380538574653c93af620c5a3d51b1566c112522",
+        "api_key": "66a97268c62233675ccd7ca786b3f5af0f83224c7562269d18c49faad91d49f3",
         "num": 6
     }
 
@@ -128,7 +128,7 @@ def scrapeSERP(loc, dur):
         "hl": "en",
         "gl": "us",
         "google_domain": "google.com",
-        "api_key": "4152da1bab98e3c9da74046d8380538574653c93af620c5a3d51b1566c112522",
+        "api_key": "66a97268c62233675ccd7ca786b3f5af0f83224c7562269d18c49faad91d49f3",
         "num": 5
     }
 
@@ -147,7 +147,7 @@ def scrapeSERP(loc, dur):
         "hl": "en",
         "gl": "us",
         "google_domain": "google.com",
-        "api_key": "4152da1bab98e3c9da74046d8380538574653c93af620c5a3d51b1566c112522",
+        "api_key": "66a97268c62233675ccd7ca786b3f5af0f83224c7562269d18c49faad91d49f3",
         "num": 5
     }
 
@@ -168,6 +168,9 @@ def scrapeSERP(loc, dur):
 
 
 def scrapeReddit(link):
+
+    if 'reddit' not in str(link):
+        return "" #return empty string if invalid link
 
     reddit = praw.Reddit(
         client_id = "VxmaNeTmgzmp8dUA2ttN2A",

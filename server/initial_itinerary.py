@@ -48,6 +48,7 @@ def developOptions(loc, dur):
     Provide a brief overview for each itinerary highlighting key locations and activities.
     Incorporate a mix of popular destinations and lesser-known gems while ensuring a balanced and enjoyable experience.
     Ensure that all day numbers add up to the duration provided
+    Don't do anything extra, just as much as is included in this prompt and formatted correctly
 
     Format each option as such, changing the hashtags to numbers as required and adding as many lines per option as required: \n
     *** \n

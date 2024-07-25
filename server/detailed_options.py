@@ -67,12 +67,13 @@ def summarize_content(loc, dur):
         template = 'Context: {context}\n\nQuestion: {question} \n\nAnswer:'
     )
 
-    query = """ \n Considering the various information provided, create a holistic itinerary for a trip to """ +  loc + """ for """ + dur + """ days.  
-        Be sure to include every single possible place and attraction to visit within the location.
+    query = """ \n Considering the various information provided, create an itinerary for a trip to """ +  loc + """ for """ + dur + """ days.  
         Return in the following format:
-        bulleted list of all places to visit, bulleted list of all restaurant options, bulleted list of all tips to keep in mind,
+        bulleted list of all places/attractions to visit, bulleted list of all restaurant options, bulleted list of all tips to keep in mind,
         best mode of transporation for this place.
-    """
+        Do not include descriptions for each item, just the name.
+        Based on the context, do not miss any attractions or restuarants: account for every possible option.
+        Be sure that all places/attractions and restuarants are in """ + loc + """ not anywhere else even if the name is the same"""
 
     retrieved_docs = retriever.invoke(query)
 

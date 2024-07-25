@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import './Step3Map.css'; // Ensure you have this CSS file
+import './Step3Map.css'; // Ensure this file includes the custom checkbox styles
 import { useNavigate } from 'react-router-dom';
 import { mappingDetails } from './API';
 
-function Step3Map({ detailedItinerary, setBuiltItinerary }) {
+function Step3Map({ detailedItinerary, selectedItinerary, setBuiltItinerary, setMappingData }) {
   const navigate = useNavigate();
   const [expandedKey, setExpandedKey] = useState(null);
   const [placeholders, setPlaceholders] = useState({});
   const [loading, setLoading] = useState(false); // Add loading state
+  const [filled, setFilled] = useState(false); // Track whether checkboxes should be filled
 
   const handleExpand = (key) => {
     setExpandedKey(expandedKey === key ? null : key);
@@ -30,8 +31,11 @@ function Step3Map({ detailedItinerary, setBuiltItinerary }) {
     });
   };
 
+  
+
   const handleConfirm = async () => {
     setLoading(true); // Set loading state
+    setFilled(true); // Set filled state to true
 
     const formattedData = Object.keys(placeholders).reduce((acc, key) => {
       acc[key] = [
@@ -43,10 +47,19 @@ function Step3Map({ detailedItinerary, setBuiltItinerary }) {
 
     try {
       console.log('Sending data to server:', formattedData); // Debug log
-      const builtItinerary = await mappingDetails(formattedData); // Await the API response
-      console.log('Received response from server:', builtItinerary); // Debug log
+      const itinerary_and_mapping = await mappingDetails(formattedData, selectedItinerary); // BOTH details AND mapping data
+      
+      // const builtItinerary = itinerary_and_mapping.mappingDetails
+      // const mappingData = itinerary_and_mapping.mappingData
+
+      const { mappingDetails: builtItinerary, mappingData: mappingData } = itinerary_and_mapping;
+
+      console.log('Received user built itinerary from server:', builtItinerary); // Debug log
+
+      console.log('Received mapping data from server:', mappingData); // Debug log for mapping data
 
       setBuiltItinerary(builtItinerary); // Save response to state
+      setMappingData(mappingData)
       navigate('/confirmation'); // Navigate to confirmation page
 
     } catch (error) {
@@ -86,6 +99,7 @@ function Step3Map({ detailedItinerary, setBuiltItinerary }) {
                           <input
                             type="checkbox"
                             className="circular-checkbox"
+                            checked={placeholders[key]?.[type]?.includes(item) || false}
                             onChange={() => handleCheckboxChange(key, item, type.toLowerCase())}
                           />
                           {item}
@@ -130,4 +144,3 @@ function Step3Map({ detailedItinerary, setBuiltItinerary }) {
 }
 
 export default Step3Map;
-
